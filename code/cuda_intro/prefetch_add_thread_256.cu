@@ -1,3 +1,5 @@
+
+
 //
 // Created by DingLi on 2023-12-01.
 //
@@ -35,6 +37,9 @@ int main(void)
     
     cudaMallocManaged(&x, N*sizeof(float));
     cudaMallocManaged(&y, N*sizeof(float));
+    int device_id=0;
+    cudaStream_t stream = 0;  
+
 
 
     // initialize x and y arrays on the host after mannaged memory
@@ -42,6 +47,8 @@ int main(void)
         x[i] = 1.0f;
         y[i] = 2.0f;
     }
+    cudaMemPrefetchAsync(x, N*sizeof(float), device_id, stream);
+    cudaMemPrefetchAsync(y, N*sizeof(float), device_id, stream);
 
     int threads = 256;
     int blocks = (N+threads-1) / threads;
